@@ -43,6 +43,47 @@ DELETE FROM users WHERE name LIKE 'M%';
 
 SELECT * from actors;
 
-SELECT * from users
+SELECT * from users;
+
+CREATE TABLE user_favorites (
+    idUser INT,
+    idMovie INT,
+    score TINYINT,  -- Puntuación del 1 al 10
+    PRIMARY KEY (idUser, idMovie),
+    FOREIGN KEY (idUser) REFERENCES users(idUser),
+    FOREIGN KEY (idMovie) REFERENCES movies(idMovie)
+);
+
+INSERT INTO user_favorites (idUser, idMovie, score) VALUES
+(1, 1, 9),
+(1, 2, 8);
+
+SELECT u.name AS user_name, m.title AS movie_title, uf.score
+FROM user_favorites uf
+JOIN users u ON uf.idUser = u.idUser
+JOIN movies m ON uf.idMovie = m.idMovie;
+
+CREATE TABLE movie_actors (
+    idMovie INT,
+    idActor INT,
+    PRIMARY KEY (idMovie, idActor),
+    FOREIGN KEY (idMovie) REFERENCES movies(idMovie),
+    FOREIGN KEY (idActor) REFERENCES actors(idActor)
+);
+
+INSERT INTO movie_actors (idMovie, idActor) VALUES
+(1, 3),
+
+-- La vida es bella (idMovie 2) - Roberto Benigni (idActor 2)
+(2, 2),
+
+-- Forrest Gump (idMovie 3) - Tom Hanks (idActor 1)
+(3, 1);
+
+SELECT m.title AS movie_title, a.name AS actor_name, a.lastname AS actor_lastname
+FROM movie_actors ma
+JOIN movies m ON ma.idMovie = m.idMovie
+JOIN actors a ON ma.idActor = a.idActor;
+
 
 
